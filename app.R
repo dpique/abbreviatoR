@@ -6,19 +6,25 @@ library(shinythemes)
 
 return_abbrevs <- function(txt, rgx2, max_len=Inf){
   txt.splt <- str_split(txt, pattern = "\\s|,|;|:") %>% unlist()
+  #print(txt.splt)
   hits <- grep(pattern = rgx2, x = txt.splt)
+  #print("hits")
+  #print(hits)
   res <- txt.splt[hits] %>% str_squish() %>% str_replace_all("[^[:alnum:]|\\-|\\.]", "") %>% unique() %>% sort()
-  
+  #print("res")
+  #print(res)
   ## update this so that if 2 terms differ by only a terminal period(s) 
   ## and the term has no other periods, return char with no periods
   regex_term_period = "^[^\\.]+\\.+$"
   res_term_per_idx <- grep(pattern = regex_term_period, x = res)
+  #print("res_term_per_idx")
+  #print(res_term_per_idx)
   
   if(length(res_term_per_idx) > 0){
-    res[res_term_per_idx] <- str_replace_all(res[res_term_per_idx], "[^[:alnum:]]", "") %>% unique() %>% sort()
+    res[res_term_per_idx] <- str_replace_all(res[res_term_per_idx], "\\.+$", "")
   }
   res2 <- res[nchar(res) <= max_len]
-  return(unique(res2))
+  return(unique(res2) %>% sort())
 }
 
 ui <- fluidPage(
@@ -43,7 +49,7 @@ ui <- fluidPage(
                     ),
           textInput(inputId = "ml",
                     value=Inf,
-                    label="Max word length")),
+                    label="Max Abbrev length (set to 'Inf' for no limit)")),
           mainPanel(
             br(),
             p("Results:"),
