@@ -59,8 +59,8 @@ ui <- fluidPage(
          tags$h4("Author: Daniel Pique"), 
          p("AbbreviatoR was developed in response for a need to create a list of abbreviations for my thesis. I used a regular expression in sublime text editor but then thought that this could make a more generally useful app."),
          HTML("<a href=\"https://twitter.com/dpique12?ref_src=twsrc%5Etfw\" class=\"twitter-follow-button\" data-show-count=\"false\">Follow @dpique12</a><script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>"),
-         HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>"),
-         tags$a(href="http://dpique.rbind.io", icon(name = "home" , class = "fa-2x"))
+         HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>")
+         #tags$a(href="http://dpique.rbind.io", icon(name = "home" , class = "fa-2x"))
    )
   )
 )
