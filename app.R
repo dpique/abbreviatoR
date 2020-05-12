@@ -49,20 +49,23 @@ ui <- fluidPage(
                     ),
           textInput(inputId = "ml",
                     value=Inf,
-                    label="Max Abbrev length (set to 'Inf' for no limit)")),
+                    label="Max Abbreviation length (set to 'Inf' for no limit)"),
+          hr(),
+          h4("About this App"),
+          p("AbbreviatoR was developed in response to a need to create a list of abbreviations for my thesis. I used regular expressions to gather abbreviations but thought that this could make a more generally useful app."),
+          HTML("Did this app save you time? If so, you can <a href='https://ko-fi.com/W7W0Z4N0' target='_blank'><img height='36' style='border:0px;height:30px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>"),
+          h4("About the Author"),
+          HTML("If you'd like to stay in touch or learn more about my work, please follow me at the links below or <a href=\"https://dpique.rbind.io/\" target='_blank'> visit my homepage</a>."),
+          HTML("<a href=\"https://twitter.com/dpique12?ref_src=twsrc%5Etfw\" class=\"twitter-follow-button\" data-show-count=\"false\">Follow @dpique12</a><script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>"),
+          HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>"),
+          ),
+          
           mainPanel(
             br(),
             h3("Results"),
             htmlOutput("txt2")
           )
-   )), tabPanel("About",
-         tags$h4("Author: Daniel Piqué"), 
-         p("AbbreviatoR was developed in response for a need to create a list of abbreviations for my thesis. I used a regular expression in sublime text editor but then thought that this could make a more generally useful app."),
-         HTML("<a href=\"https://twitter.com/dpique12?ref_src=twsrc%5Etfw\" class=\"twitter-follow-button\" data-show-count=\"false\">Follow @dpique12</a><script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>"),
-         HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>"),
-         HTML("<a href='https://ko-fi.com/W7W0Z4N0' target='_blank'><img height='36' style='border:0px;height:30px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>")
-         #tags$a(href="http://dpique.rbind.io", icon(name = "home" , class = "fa-2x"))
-   )
+   ))
   )
 )
 
