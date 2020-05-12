@@ -6,7 +6,9 @@ To run abbreviatoR locally, clone this repo to your desktop and run the followin
 ```
 install.packages("shiny")
 library(shiny)
-# then, using `setwd()`, set your working directory to the "abbreviatoR" directory 
+
+## using `setwd()`, set your working directory 
+## to the "abbreviatoR" directory 
 runApp()
 
 ```
