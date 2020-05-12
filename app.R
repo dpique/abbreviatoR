@@ -1,8 +1,5 @@
 library(shiny)
 library(tidyverse)
-#library(readtext)
-#library(here)
-#library(shinythemes)
 
 return_abbrevs <- function(txt, rgx2, max_len=Inf){
   # 1. split up the text into individual words by common delimiters
@@ -36,20 +33,19 @@ ui <- fluidPage(
     tabPanel("Main", 
       sidebarLayout(
           sidebarPanel(
-          
-          textInput(inputId = "txt",
-                    label = "Paste any text here (can be copied/pasted straight from word, excel, etc.)"
+            textInput(inputId = "regex",
+                      value = "([a-zA-Z]\\.|-){2,}|[a-zA-Z0-9]{0,}[A-Z]{2,}[a-zA-Z0-9-]{0,}|[A-Za-z0-9]{1,}[\\.-]{0,}[A-Z]{1,}[a-zA-Z0-9]{1,}",
+                      label = "Regex (feel free to modify)"
+            ),
+            textInput(inputId = "ml",
+                      value=Inf,
+                      label="Max Abbreviation length (set to 'Inf' for no limit)"),
+            checkboxInput(inputId="docx",
+                          label="Check if pasting from .docx with in-text citations",
+                          value=FALSE),
+            textInput(inputId = "txt",
+                    label = "Paste text here (can be copied/pasted straight from word, excel, etc.)"
                     ),
-          checkboxInput(inputId="docx",
-                        label="Check if pasting from .docx with in-text citations",
-                        value=FALSE),
-          textInput(inputId = "regex",
-                    value = "([a-zA-Z]\\.){2,}|[A-Z]{2,}|[[A-Z]{1,}\\w*[A-Z]{1,}]{2,}",
-                    label = "Regex (feel free to modify)"
-                    ),
-          textInput(inputId = "ml",
-                    value=Inf,
-                    label="Max Abbreviation length (set to 'Inf' for no limit)"),
           hr(),
           h4("About this App"),
           p("AbbreviatoR was developed in response to a need to create a list of abbreviations for my thesis. I used regular expressions to gather abbreviations but thought that this could make a more generally useful app."),
@@ -57,7 +53,7 @@ ui <- fluidPage(
           h4("About the Author"),
           HTML("If you'd like to stay in touch or learn more about my work, please follow me at the links below or <a href=\"https://dpique.rbind.io/\" target='_blank'> visit my homepage</a>."),
           HTML("<a href=\"https://twitter.com/dpique12?ref_src=twsrc%5Etfw\" class=\"twitter-follow-button\" data-show-count=\"false\">Follow @dpique12</a><script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>"),
-          HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>"),
+          HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>")
           ),
           
           mainPanel(
@@ -89,4 +85,3 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
-
