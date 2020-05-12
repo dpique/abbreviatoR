@@ -1,37 +1,37 @@
 library(shiny)
 library(tidyverse)
-library(readtext)
-library(here)
-library(shinythemes)
+#library(readtext)
+#library(here)
+#library(shinythemes)
 
 return_abbrevs <- function(txt, rgx2, max_len=Inf){
-  txt.splt <- str_split(txt, pattern = "\\s|,|;|:") %>% unlist()
-  #print(txt.splt)
-  hits <- grep(pattern = rgx2, x = txt.splt)
-  #print("hits")
-  #print(hits)
-  res <- txt.splt[hits] %>% str_squish() %>% str_replace_all("[^[:alnum:]|\\-|\\.]", "") %>% unique() %>% sort()
-  #print("res")
-  #print(res)
-  ## update this so that if 2 terms differ by only a terminal period(s) 
-  ## and the term has no other periods, return char with no periods
+  # 1. split up the text into individual words by common delimiters
+  txt.splt <- str_split(txt, pattern = "\\s|,|;|:") %>% unlist() 
+  # 2. grab the words/phrases that match the regex
+  hits <- grep(pattern = rgx2, x = txt.splt) 
+  
+  res <- txt.splt[hits] %>% 
+    str_squish() %>% 
+    str_replace_all("[^[:alnum:]|\\-|\\.]", "") %>% 
+    unique() %>%  # get all unique values
+    sort() #sort the list alphabetically
+
+  ## if 2 terms differ by only a terminal period(s) (b/c it's at the end of a sentence) 
+  ## and the term has no other periods, return a character with no periods
   regex_term_period = "^[^\\.]+\\.+$"
   res_term_per_idx <- grep(pattern = regex_term_period, x = res)
-  #print("res_term_per_idx")
-  #print(res_term_per_idx)
-  
+
   if(length(res_term_per_idx) > 0){
     res[res_term_per_idx] <- str_replace_all(res[res_term_per_idx], "\\.+$", "")
   }
   res2 <- res[nchar(res) <= max_len]
-  return(unique(res2) %>% sort())
+  res3 <- unique(res2) %>% sort()
+  return(res3)
 }
 
 ui <- fluidPage(
-  #shinythemes::themeSelector(),
-  theme = shinytheme("yeti"),
+  theme = shinythemes::shinytheme("yeti"),
    titlePanel("abbreviatoR - Generate an Alphabetized List of Abbreviations from Text"),
-   #tags$h3(""),
   tabsetPanel(
     tabPanel("Main", 
       sidebarLayout(
@@ -52,14 +52,15 @@ ui <- fluidPage(
                     label="Max Abbrev length (set to 'Inf' for no limit)")),
           mainPanel(
             br(),
-            p("Results:"),
+            h3("Results"),
             htmlOutput("txt2")
           )
    )), tabPanel("About",
-         tags$h4("Author: Daniel Pique"), 
+         tags$h4("Author: Daniel Piqué"), 
          p("AbbreviatoR was developed in response for a need to create a list of abbreviations for my thesis. I used a regular expression in sublime text editor but then thought that this could make a more generally useful app."),
          HTML("<a href=\"https://twitter.com/dpique12?ref_src=twsrc%5Etfw\" class=\"twitter-follow-button\" data-show-count=\"false\">Follow @dpique12</a><script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>"),
-         HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>")
+         HTML("<a class=\"github-button\" href=\"https://github.com/dpique\" aria-label=\"Follow @dpique on GitHub\">Follow @dpique</a><script async defer src=\"https://buttons.github.io/buttons.js\"></script>"),
+         HTML("<a href='https://ko-fi.com/W7W0Z4N0' target='_blank'><img height='36' style='border:0px;height:30px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>")
          #tags$a(href="http://dpique.rbind.io", icon(name = "home" , class = "fa-2x"))
    )
   )
@@ -79,7 +80,8 @@ server <- function(input, output) {
     } else {
       res <- return_abbrevs(txt = input$txt, rgx2 = input$regex, max_len=as.numeric(input$ml))
     }
-    HTML(paste(res, collapse = '<br/>'))
+    len_res <- length(res)
+    HTML(paste0("<h4>", len_res, " abbreviations </h4><br/>"), paste(res, collapse = '<br/>'))
   })
 }
 
